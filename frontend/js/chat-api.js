@@ -96,6 +96,10 @@ class ChatAPI {
      * Verifica saúde da API
      */
     async checkHealth() {
+        // Em produção, assume que está online (a API serverless não tem endpoint de health)
+        if (!this.baseURL.includes('localhost')) {
+            return true;
+        }
         try {
             const response = await fetch(`${this.baseURL}/health`);
             const data = await response.json();
