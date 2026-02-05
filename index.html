@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat de Atendimento - Prefeitura de Laguna</title>
+    <meta name="description" content="Chat de atendimento digital da Prefeitura Municipal de Laguna. Tire suas dúvidas sobre setores e serviços municipais.">
+    <meta name="theme-color" content="#1B7A34">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="assets/logo-brasao-removebg-preview.png" alt="Prefeitura de Laguna" class="logo">
+                </div>
+                <div class="header-title">
+                    <h2>Atendimento Digital</h2>
+                    <p>Tire suas dúvidas sobre os serviços municipais</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section" id="welcomeSection">
+                <div class="welcome-card">
+                    <div class="welcome-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h2>Bem-vindo ao Atendimento Digital</h2>
+                    <p>Olá! Sou o assistente virtual da <strong>Prefeitura de Laguna</strong>. Estou aqui para ajudar você a encontrar informações sobre nossos setores e serviços municipais de forma rápida e eficiente.</p>
+                    <div class="status-badge">
+                        <span>Online agora</span>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <h3>Acesso Rápido aos Setores</h3>
+                        <div class="sectors-grid">
+                            <button class="sector-btn" onclick="askAboutSector('Guarda Municipal')">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Guarda Municipal</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Secretaria de Saúde')">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Saúde</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Secretaria de Educação')">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Educação</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Secretaria de Assistência Social')">
+                                <i class="fas fa-hands-helping"></i>
+                                <span>Assistência Social</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Secretaria de Obras')">
+                                <i class="fas fa-hard-hat"></i>
+                                <span>Obras</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Secretaria da Fazenda')">
+                                <i class="fas fa-coins"></i>
+                                <span>Fazenda</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Protocolo Geral')">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Protocolo</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Recursos Humanos')">
+                                <i class="fas fa-users"></i>
+                                <span>RH</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Trânsito e Mobilidade')">
+                                <i class="fas fa-traffic-light"></i>
+                                <span>Trânsito</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Meio Ambiente')">
+                                <i class="fas fa-leaf"></i>
+                                <span>Meio Ambiente</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Turismo')">
+                                <i class="fas fa-umbrella-beach"></i>
+                                <span>Turismo</span>
+                            </button>
+                            <button class="sector-btn" onclick="askAboutSector('Esporte e Cultura')">
+                                <i class="fas fa-futbol"></i>
+                                <span>Esporte e Cultura</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat Section -->
+            <section class="chat-section" id="chatSection">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be inserted here -->
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="userInput" 
+                                placeholder="Digite sua dúvida aqui..." 
+                                autocomplete="off"
+                                onkeypress="handleKeyPress(event)"
+                            >
+                            <button class="send-btn" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p class="input-hint">Pressione Enter para enviar ou clique no botão</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p><i class="fas fa-info-circle"></i> Este chat é apenas informativo e não substitui o atendimento presencial</p>
+                    <p><i class="fas fa-clock"></i> Atendimento presencial: Segunda a Sexta, 8h às 17h</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Prefeitura Municipal de Laguna - Santa Catarina</p>
+                </div>
+                <div class="footer-logo">
+                    <i class="fas fa-city" style="color: var(--secondary-yellow); font-size: 20px;"></i>
+                    <span>© 2024 Prefeitura Municipal de Laguna - SC</span>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Chat Toggle Button (Mobile) -->
+        <button class="chat-toggle" id="chatToggle" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+        </button>
+    </div>
+
+    <script src="frontend/js/chat-api.js"></script>
+    <script src="frontend/js/chat-ui.js"></script>
+</body>
+</html>

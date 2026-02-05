@@ -1,0 +1,5 @@
+Coloque aqui os logos da Prefeitura de Laguna:
+- logo-laguna.png (logo principal)
+- brasao-laguna.png (brasão do município)
+
+Para usar as imagens que você enviou, salve-as nesta pasta com os nomes acima.
