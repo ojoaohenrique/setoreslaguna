@@ -1,12 +1,13 @@
-const OpenAI = require('openai');
+import OpenAI from 'openai';
 
-// Configuração do OpenAI
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+export default async function handler(req, res) {
+    // Inicializa OpenAI dentro da função
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
 
-// System prompt
-const systemPrompt = `Você é o assistente virtual oficial da Prefeitura Municipal de Laguna, Santa Catarina.
+    // System prompt
+    const systemPrompt = `Você é o assistente virtual oficial da Prefeitura Municipal de Laguna, Santa Catarina.
 
 DIRETRIZES IMPORTANTES:
 - Seja educado, claro e objetivo
@@ -33,7 +34,6 @@ SETORES DA PREFEITURA:
 
 HORÁRIO PADRÃO: Segunda a Sexta, 8h às 17h (exceto Guarda Municipal: 24h)`;
 
-module.exports = async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
