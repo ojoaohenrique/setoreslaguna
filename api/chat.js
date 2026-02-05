@@ -70,7 +70,7 @@ HORÁRIO PADRÃO: Segunda a Sexta, 8h às 17h (exceto Guarda Municipal: 24h)`;
 
         // Chama OpenAI
         const completion = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
+            model: 'gpt-3.5-turbo',
             messages: messages,
             temperature: 0.7,
             max_tokens: 500
@@ -85,7 +85,7 @@ HORÁRIO PADRÃO: Segunda a Sexta, 8h às 17h (exceto Guarda Municipal: 24h)`;
         });
 
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro:', error.message || error);
 
         if (error.code === 'insufficient_quota') {
             return res.status(429).json({
@@ -94,9 +94,16 @@ HORÁRIO PADRÃO: Segunda a Sexta, 8h às 17h (exceto Guarda Municipal: 24h)`;
             });
         }
 
+        if (error.code === 'invalid_api_key') {
+            return res.status(401).json({
+                success: false,
+                error: 'Chave API inválida.'
+            });
+        }
+
         return res.status(500).json({
             success: false,
-            error: 'Erro ao processar sua mensagem. Tente novamente.'
+            error: error.message || 'Erro ao processar sua mensagem. Tente novamente.'
         });
     }
 }
