@@ -1,12 +1,5 @@
-const OpenAI = require('openai');
-
-module.exports = async function (req, res) {
-    // Inicializa OpenAI dentro da função
-    const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY
-    });
-
-    // System prompt
+export default async function handler(req, res) {
+    // System prompt institucional
     const systemPrompt = `Você é o assistente virtual oficial da Prefeitura Municipal de Laguna, Santa Catarina.
 
 DIRETRIZES IMPORTANTES:
@@ -58,52 +51,77 @@ HORÁRIO PADRÃO: Segunda a Sexta, 8h às 17h (exceto Guarda Municipal: 24h)`;
         }
 
         if (!process.env.OPENAI_API_KEY) {
-            return res.status(500).json({ success: false, error: 'API Key não configurada' });
+            console.error('OPENAI_API_KEY não está definida');
+            return res.status(500).json({ success: false, error: 'API Key não configurada no servidor' });
         }
 
-        // Prepara mensagens
+        // Prepara mensagens para a API
         const messages = [
             { role: 'system', content: systemPrompt },
             ...history.slice(-10),
             { role: 'user', content: message }
         ];
 
-        // Chama OpenAI
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: messages,
-            temperature: 0.7,
-            max_tokens: 500
+        // Chama OpenAI via fetch (sem SDK)
+        const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: messages,
+                temperature: 0.7,
+                max_tokens: 500
+            })
         });
 
-        const response = completion.choices[0].message.content;
+        const data = await openaiResponse.json();
+
+        // Verifica erros da OpenAI
+        if (!openaiResponse.ok) {
+            console.error('Erro OpenAI:', data);
+            
+            if (data.error?.code === 'insufficient_quota') {
+                return res.status(429).json({
+                    success: false,
+                    error: 'Cota da API excedida. Entre em contato com o administrador.'
+                });
+            }
+
+            if (data.error?.code === 'invalid_api_key' || openaiResponse.status === 401) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Chave API inválida.'
+                });
+            }
+
+            return res.status(500).json({
+                success: false,
+                error: data.error?.message || 'Erro na comunicação com a OpenAI'
+            });
+        }
+
+        if (!data.choices || !data.choices[0]) {
+            console.error('Resposta inesperada da OpenAI:', data);
+            return res.status(500).json({ success: false, error: 'Resposta inválida da OpenAI' });
+        }
+
+        const responseText = data.choices[0].message.content;
 
         return res.status(200).json({
             success: true,
-            response: response,
-            tokensUsed: completion.usage.total_tokens
+            response: responseText,
+            tokensUsed: data.usage?.total_tokens || 0
         });
 
     } catch (error) {
-        console.error('Erro:', error.message || error);
-
-        if (error.code === 'insufficient_quota') {
-            return res.status(429).json({
-                success: false,
-                error: 'Cota da API excedida. Entre em contato com o administrador.'
-            });
-        }
-
-        if (error.code === 'invalid_api_key') {
-            return res.status(401).json({
-                success: false,
-                error: 'Chave API inválida.'
-            });
-        }
+        console.error('Erro no servidor:', error.message || error);
 
         return res.status(500).json({
             success: false,
-            error: error.message || 'Erro ao processar sua mensagem. Tente novamente.'
+            error: 'Erro interno do servidor. Tente novamente.'
         });
     }
 }

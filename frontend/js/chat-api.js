@@ -21,7 +21,7 @@ class ChatAPI {
                 },
                 body: JSON.stringify({
                     message: message,
-                    conversationHistory: this.conversationHistory
+                    history: this.conversationHistory
                 })
             });
 
