@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // System prompt institucional
     const systemPrompt = `Você é o assistente virtual oficial da Prefeitura Municipal de Laguna, Santa Catarina.
 
