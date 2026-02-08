@@ -4,7 +4,7 @@ Sistema de chat inteligente para atendimento ao cidadão, desenvolvido para a Pr
 
 ## Sobre o Projeto
 
-Este chat de atendimento digital utiliza inteligência artificial para:
+Este chat de atendimento digital utiliza inteligência artificial(open ia) para:
 - Responder dúvidas frequentes da população
 - Direcionar corretamente o cidadão ao setor responsável
 - Reduzir atendimentos presenciais desnecessários
